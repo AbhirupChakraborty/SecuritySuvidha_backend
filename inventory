@@ -1,2 +1,2 @@
 [localhost]
-abhirup ansible_connection=local
+client1 ansible_host=localhost ansible_connection=ssh ansible_user=speuser

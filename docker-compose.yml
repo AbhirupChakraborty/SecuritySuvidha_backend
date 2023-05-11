@@ -4,10 +4,14 @@ services:
     image: abhirup18/spe_backend:latest
     ports:
       - "9002:9002"
+    volumes:
+      - logs:/logs
   frontend:
     image: abhirup18/spe_frontend:latest
     ports:
       - "3000:3000"
+volumes:
+  logs:
 #   elasticsearch:
 #     image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
 #     container_name: elasticsearch
