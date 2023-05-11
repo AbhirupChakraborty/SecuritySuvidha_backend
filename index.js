@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import winston from "winston";
+import { ElasticsearchTransport } from 'winston-elasticsearch';
 
 const app = express();
 app.use(express.json());
@@ -14,6 +16,43 @@ mongoose
   })
   .then(() => console.log("connected"))
   .catch((err) => console.log(err));
+
+  const logger = winston.createLogger({
+    level: 'info',
+    transports: [
+      new ElasticsearchTransport({
+        level: 'info',
+        index: 'logs',
+        clientOpts: {
+          node: 'http://localhost:9200/',
+          
+        },
+      }),
+    ],
+  });
+
+
+  app.use((req, res, next) => {
+    logger.info({
+      message: "API request",
+      method: req.method,
+      path: req.path,
+      query: req.query,
+      body: req.body
+    });
+  
+    res.on("finish", () => {
+      logger.info({
+        message: "API response",
+        method: req.method,
+        path: req.path,
+        status: res.statusCode
+      });
+    });
+  
+    next();
+  });
+
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -196,9 +235,9 @@ app.post("/addmem", async (req, res) => {
   }
 });
 
-app.get("/getmem", async (req, res) => {
+app.get("/getallcourior", async (req, res) => {
   try {
-    const users = await User4.find({});
+    const users = await User3.find({});
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -217,11 +256,11 @@ app.get("/memornot/get-details/:email", async (req, res) => {
   }
 });
 
-app.delete("/memornot/delete/:email", async (req, res) => {
+app.delete("/courior/delete/:email", async (req, res) => {
   const em = req.params.email;
   console.log(em);
   try {
-    const user = await User4.findOneAndDelete({ email: em });
+    const user = await User3.findOneAndDelete({ email: em });
     res.json(user);
   } catch (error) {
     console.error(error);
