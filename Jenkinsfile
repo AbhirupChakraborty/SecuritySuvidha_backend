@@ -6,14 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Clone configuration repository') {
-            steps {
-                checkout([$class: 'GitSCM', 
-                          branches: [[name: '*/master']], 
-                          userRemoteConfigs: [[url: 'https://github.com/AbhirupChakraborty/spe_major_deploy.git']]])
-            }
-        }
-
         stage('Build and push frontend image') {
             steps {
                 checkout([$class: 'GitSCM', 
