@@ -1,21 +1,3 @@
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:28:19.993Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:28:30.810Z"}
-{"level":"info","message":"Successfully Registered","timestamp":"2023-05-12T05:28:55.581Z"}
-{"level":"info","message":"Goes courior data to frontend","timestamp":"2023-05-12T05:28:57.774Z"}
-{"level":"info","message":"Now courior is deleted from List","timestamp":"2023-05-12T05:28:59.229Z"}
-{"level":"info","message":"Goes courior data to frontend","timestamp":"2023-05-12T05:29:01.504Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:32:11.328Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:38:31.837Z"}
-{"level":"info","message":"Successfully Registered","timestamp":"2023-05-12T05:50:16.096Z"}
-{"level":"info","message":"Goes courior data to frontend","timestamp":"2023-05-12T05:50:22.767Z"}
-{"level":"info","message":"Goes courior data to frontend","timestamp":"2023-05-12T05:50:26.866Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:50:39.540Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:50:48.192Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:54:43.191Z"}
-{"level":"info","message":"Successfully Registered","timestamp":"2023-05-12T05:56:21.979Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T05:56:34.994Z"}
-{"level":"info","message":"Successfully Registered, Please login now.","timestamp":"2023-05-12T06:16:33.793Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T06:16:44.055Z"}
-{"level":"info","message":"Successfully Registered","timestamp":"2023-05-12T06:17:37.622Z"}
-{"level":"info","message":"Goes courior data to frontend","timestamp":"2023-05-12T06:17:45.284Z"}
-{"level":"info","message":"login successfully","timestamp":"2023-05-12T06:17:54.614Z"}
+2023-05-12T15:50:10.783Z [INFO] login successfully
+2023-05-12T15:50:25.841Z [INFO] login successfully
+2023-05-12T15:50:29.263Z [INFO] Goes courior data to frontend
