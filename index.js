@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import winston from "winston";
-import { ElasticsearchTransport } from 'winston-elasticsearch';
+import logger from "./logger.js";
+// import winston from "winston";
+// import { ElasticsearchTransport } from 'winston-elasticsearch';
 
 const app = express();
 app.use(express.json());
@@ -17,41 +18,41 @@ mongoose
   .then(() => console.log("connected"))
   .catch((err) => console.log(err));
 
-  const logger = winston.createLogger({
-    level: 'info',
-    transports: [
-      new ElasticsearchTransport({
-        level: 'info',
-        index: 'logs',
-        clientOpts: {
-          node: 'http://localhost:9200/',
+  // const logger = winston.createLogger({
+  //   level: 'info',
+  //   transports: [
+  //     new ElasticsearchTransport({
+  //       level: 'info',
+  //       index: 'logs',
+  //       clientOpts: {
+  //         node: 'http://localhost:9200/',
           
-        },
-      }),
-    ],
-  });
+  //       },
+  //     }),
+  //   ],
+  // });
 
 
-  app.use((req, res, next) => {
-    logger.info({
-      message: "API request",
-      method: req.method,
-      path: req.path,
-      query: req.query,
-      body: req.body
-    });
+  // app.use((req, res, next) => {
+  //   logger.info({
+  //     message: "API request",
+  //     method: req.method,
+  //     path: req.path,
+  //     query: req.query,
+  //     body: req.body
+  //   });
   
-    res.on("finish", () => {
-      logger.info({
-        message: "API response",
-        method: req.method,
-        path: req.path,
-        status: res.statusCode
-      });
-    });
+  //   res.on("finish", () => {
+  //     logger.info({
+  //       message: "API response",
+  //       method: req.method,
+  //       path: req.path,
+  //       status: res.statusCode
+  //     });
+  //   });
   
-    next();
-  });
+  //   next();
+  // });
 
 
 const userSchema = new mongoose.Schema({
@@ -71,7 +72,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const userSchema2 = new mongoose.Schema({
-  companyname: String,
+  cname: String,
   email: String,
   address: String,
   status:String,
@@ -128,10 +129,12 @@ app.post("/login", async (req, res) => {
     if (user) {
       if (password === user.password) {
         res.send({ message: "Login Successfully", user: user });
+        logger.info("login successfully");
       } else {
         res.send({ message: "Password didn't Match" });
       }
     } else {
+      logger.info("user not exist");
       res.send({ message: "User Not Exist" });
     }
   } catch (err) {
@@ -157,6 +160,7 @@ app.post("/register", async (req, res) => {
     const user = await User.findOne({ email: email });
     if (user) {
       res.send({ message: "User already registered" });
+      logger.info("User already registered");
     } else {
       const newUser = new User({
         name,
@@ -166,6 +170,7 @@ app.post("/register", async (req, res) => {
       });
       await newUser.save();
       res.send({ message: "Successfully Registered, Please login now." });
+      logger.info("Successfully Registered, Please login now.");
     }
   } catch (err) {
     res.send(err);
@@ -173,21 +178,24 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/company", async (req, res) => {
-  const { companyname, email, address, status } = req.body;
+  const { cname, email, address, status } = req.body;
   console.log(req.body);
   try {
-    const user3 = await User3.findOne({ companyname: companyname });
+    const user3 = await User3.findOne({ companyname: cname });
     if (user3) {
       res.send({ message: "This company is already in Everyone's feed" });
+      logger.info("This company is already in Everyone's feed");
+
     } else {
       const newUser2 = new User3({
-        companyname,
+        cname,
         email,
         address,
         status
       });
       await newUser2.save();
       res.send({ message: "Successfully Registered" });
+      logger.info("Successfully Registered" );
     }
   } catch (err) {
     res.send(err);
@@ -225,6 +233,7 @@ app.post("/addmem", async (req, res) => {
         });
         await newUser.save();
         res.send({ message: "Added Successfully !!" });
+        logger.info("Added Successfully !!");
       } else {
         res.send({ message: "Not Found" });
       }
@@ -238,6 +247,7 @@ app.post("/addmem", async (req, res) => {
 app.get("/getallcourior", async (req, res) => {
   try {
     const users = await User3.find({});
+    logger.info("Goes courior data to frontend");
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -251,6 +261,7 @@ app.get("/memornot/get-details/:email", async (req, res) => {
   const user4 = await User4.findOne({ email: em });
   if (user4) {
     res.send({ message: "True" });
+    // logger.info("");
   } else {
     res.send({ message: "False" });
   }
@@ -261,6 +272,7 @@ app.delete("/courior/delete/:email", async (req, res) => {
   console.log(em);
   try {
     const user = await User3.findOneAndDelete({ email: em });
+    logger.info("Now courior is deleted from List");
     res.json(user);
   } catch (error) {
     console.error(error);
