@@ -2,8 +2,6 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import logger from "./logger.js";
-// import winston from "winston";
-// import { ElasticsearchTransport } from 'winston-elasticsearch';
 
 const app = express();
 app.use(express.json());
@@ -17,43 +15,6 @@ mongoose
   })
   .then(() => console.log("connected"))
   .catch((err) => console.log(err));
-
-  // const logger = winston.createLogger({
-  //   level: 'info',
-  //   transports: [
-  //     new ElasticsearchTransport({
-  //       level: 'info',
-  //       index: 'logs',
-  //       clientOpts: {
-  //         node: 'http://localhost:9200/',
-          
-  //       },
-  //     }),
-  //   ],
-  // });
-
-
-  // app.use((req, res, next) => {
-  //   logger.info({
-  //     message: "API request",
-  //     method: req.method,
-  //     path: req.path,
-  //     query: req.query,
-  //     body: req.body
-  //   });
-  
-  //   res.on("finish", () => {
-  //     logger.info({
-  //       message: "API response",
-  //       method: req.method,
-  //       path: req.path,
-  //       status: res.statusCode
-  //     });
-  //   });
-  
-  //   next();
-  // });
-
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -204,13 +165,31 @@ app.post("/company", async (req, res) => {
 
 app.get("/companydata", async (req, res) => {
   try {
-    const users = await User3.find({});
+    
+    const users = await User3.find({ status: 'no' });
+    // console.log(users);
     res.json(users);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal server error");
   }
 });
+
+app.patch("/companydata/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const newStatus = req.body.status;
+    console.log(newStatus);
+    const user = await User3.findOneAndUpdate({ email }, { status: newStatus }, { new: true });
+    
+    console.log(`Status for ${email} updated to ${newStatus}`);
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
+
 
 const userSchema4 = new mongoose.Schema({
   email: String,
